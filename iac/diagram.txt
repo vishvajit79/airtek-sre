@@ -1,0 +1,42 @@
++------------------------+       +---------------------+       +----------------------+
+|       Web UI Instance  |       |   API Gateway       |       |    API Service       |
+|       (EC2 Instance)   |       |                     |       |  (ECS Fargate Task)  |
++------------------------+       +---------------------+       +----------------------+
+           |                              |                              |
+           | 1. HTTP Traffic              | 2. HTTP Traffic              |
+           |                              |                              |
++------------------------+       +---------------------+       +----------------------+
+|   Web UI Security Group |       | API Security Group  |       |    VPC Subnet        |
++------------------------+       +---------------------+       +----------------------+
+           |                              |                              |
+           | 3. Allows traffic from       | 4. Allows traffic from       |
+           |    anywhere                  |    Web UI Security Group     |
+           |                              |                              |
++------------------------+       +---------------------+       +----------------------+
+|         VPC            |       |      ECS Cluster    |       |    ECS Task          |
++------------------------+       +---------------------+       +----------------------+
+           |                              |                              |
+           | 5. Contains resources        | 6. Deploys API Service       |
+           |    and subnets               |                              |
+           |                              |                              |
++------------------------+       +---------------------+       +----------------------+
+|     AWS Account        |       |     AWS Region      |       |    Pulumi Stack      |
++------------------------+       +---------------------+       +----------------------+
+
+
+A tabular representation of the infrastructure components and their relationships along with the corresponding IaC resources.
+
+| Component               | IaC Resource                                  |
+|-------------------------|-----------------------------------------------|
+| Web UI Instance         | `aws.ec2.Instance`                            |
+| API Gateway             | `aws.apigatewayv2.Api`                        |
+| API Service             | `aws.ecs.Service`                             |
+| Web UI Security Group   | `aws.ec2.SecurityGroup`                       |
+| API Security Group      | `aws.ec2.SecurityGroup`                       |
+| VPC Subnet              | `aws.ec2.Subnet`                              |
+| VPC                     | `aws.ec2.Vpc`                                 |
+| AWS Account             | N/A                                           |
+| AWS Region              | N/A                                           |
+| Pulumi Stack            | Pulumi Configuration and Deployment Management |
+
+Please note that the "AWS Account" and "AWS Region" are not specific IaC resources but rather represent the underlying AWS infrastructure where the components are deployed.
